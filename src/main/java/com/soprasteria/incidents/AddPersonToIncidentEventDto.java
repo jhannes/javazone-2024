@@ -6,6 +6,7 @@ import java.util.UUID;
 
 @Data
 public class AddPersonToIncidentEventDto implements IncidentEventDto {
+    private String event = "AddPersonToIncidentEvent";
     private UUID incidentId;
     private UUID personId;
     private String personName;

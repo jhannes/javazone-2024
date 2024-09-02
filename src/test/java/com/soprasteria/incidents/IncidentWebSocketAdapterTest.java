@@ -18,8 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IncidentWebSocketAdapterTest {
 
-    private IncidentProcessor processor;
-    private WebSocketClient webSocketClient = new WebSocketClient();
+    private final IncidentProcessor processor;
+    private final WebSocketClient webSocketClient = new WebSocketClient();
 
     public IncidentWebSocketAdapterTest() {
         processor = new IncidentProcessor();
@@ -55,11 +55,36 @@ public class IncidentWebSocketAdapterTest {
         ));
     }
 
+    @Test
+    void shouldTransmitEventsToServer() throws Exception {
+        var server = createServer();
+
+        var messages = new ArrayBlockingQueue<String>(10);
+        var connection = webSocketClient.connect(new WebSocketAdapter() {
+            @Override
+            public void onWebSocketText(String message) {
+                messages.add(message);
+            }
+        }, URI.create("ws://localhost:" + server.getURI().getPort() + "/ws")).get();
+        assertThat(messages.poll(1, TimeUnit.SECONDS)).isNotNull();
+
+
+        var event = new CreateIncidentEventDto()
+                .setIncidentId(UUID.randomUUID())
+                .setDescription("Test incident");
+        connection.getRemote().sendString(IncidentWebSocketAdapter.objectMapper.writeValueAsString(event));
+
+        var echo = messages.poll(1, TimeUnit.SECONDS);
+        assertThat(IncidentWebSocketAdapter.objectMapper.readValue(echo, CreateIncidentEventDto.class))
+                .isEqualTo(event);
+        assertThat(processor.list().getFirst().getIncidentId()).isEqualTo(event.getIncidentId());
+    }
+
     private Server createServer() throws Exception {
         var server = new Server(0);
         var context = new ServletContextHandler();
         context.addServletContainerInitializer(new JettyWebSocketServletContainerInitializer(
-                (_, container) -> container.addMapping("/ws", (req, resp) -> new IncidentWebSocketAdapter(processor))
+                (_, container) -> container.addMapping("/ws", (_, _) -> new IncidentWebSocketAdapter(processor))
         ));
         server.setHandler(context);
         server.start();
