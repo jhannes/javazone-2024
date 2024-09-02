@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IncidentEventProcessorTest {
 
-    private IncidentProcessor incidentProcessor = new IncidentProcessor();
+    private final IncidentProcessor incidentProcessor = new IncidentProcessor();
 
     @Test
     void shouldCreateIncident() {
