@@ -8,6 +8,7 @@ import org.eclipse.jetty.websocket.server.config.JettyWebSocketServletContainerI
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +28,7 @@ public class IncidentWebSocketAdapterTest {
         var server = new Server(0);
         var context = new ServletContextHandler();
         context.addServletContainerInitializer(new JettyWebSocketServletContainerInitializer(
-                (_, container) -> container.addMapping("/ws", (req, resp) -> new IncidentWebSocketAdapter())
+                (_, container) -> container.addMapping("/ws", (req, resp) -> new IncidentWebSocketAdapter(processor))
         ));
         server.setHandler(context);
         server.start();
@@ -43,8 +44,13 @@ public class IncidentWebSocketAdapterTest {
             }
         }, URI.create("ws://localhost:" + server.getURI().getPort() + "/ws"));
 
-        assertThat(messages.poll(1, TimeUnit.SECONDS)).isNotNull();
-
+        assertThat(IncidentWebSocketAdapter.objectMapper.readValue(
+                messages.poll(1, TimeUnit.SECONDS),
+                IncidentSnapshotListDto.class
+        ).getList()).isEqualTo(List.of(new IncidentSnapshotDto()
+                .setIncidentId(createIncident.getIncidentId())
+                .setDescription(createIncident.getDescription())
+        ));
     }
 
 }
