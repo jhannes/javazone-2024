@@ -10,4 +10,5 @@ public class CreateIncidentEventDto implements IncidentEventDto {
     private UUID incidentId;
     private IncidentTypeDto incidentType;
     private String description;
+    private String location;
 }

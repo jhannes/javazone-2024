@@ -11,6 +11,7 @@ public class IncidentSnapshotDto {
     private UUID incidentId;
     private IncidentTypeDto incidentType;
     private String description;
+    private String location;
 
     private Map<UUID, PersonSnapshotDto> persons = new HashMap<>();
 }

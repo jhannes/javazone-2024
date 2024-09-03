@@ -4,6 +4,17 @@ import { useEffect, useState } from "react";
 
 const root = createRoot(document.getElementById("root")!);
 
+interface IncidentSnapshotListDto {
+  list: IncidentSnapshotDto[];
+}
+
+interface IncidentSnapshotDto {
+  incidentId: string;
+  description: string;
+  incidentType: "fire" | "robbery";
+  location: string;
+}
+
 function Application() {
   const [webSocket, setWebSocket] = useState<WebSocket>();
   useEffect(() => {
@@ -11,18 +22,19 @@ function Application() {
   }, []);
   useEffect(() => {
     webSocket?.addEventListener("message", (event) => {
-      setIncidents(JSON.parse(event.data).list);
+      const message = JSON.parse(event.data) as IncidentSnapshotListDto;
+      setIncidents(message.list);
     });
   }, [webSocket]);
-  const [incidents, setIncidents] = useState<any[]>([]);
+  const [incidents, setIncidents] = useState<IncidentSnapshotDto[]>([]);
 
   return (
     <>
       <h1>Incident Response</h1>
       <h2>Incidents</h2>
       {incidents.map((i) => (
-        <div>
-          {i.description} ({i.incidentType})
+        <div key={i.incidentId}>
+          {i.description} ({i.incidentType}) at {i.location}
         </div>
       ))}
     </>

@@ -18,6 +18,7 @@ public class IncidentProcessor {
                     .setIncidentId(createEvent.getIncidentId())
                     .setIncidentType(createEvent.getIncidentType())
                     .setDescription(createEvent.getDescription())
+                    .setLocation(createEvent.getLocation())
             );
         } else if (event instanceof AddPersonToIncidentEventDto addPerson) {
             snapshots.get(addPerson.getIncidentId())

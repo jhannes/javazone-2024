@@ -21,6 +21,7 @@ public class IncidentEventProcessorTest {
                         .setIncidentId(createEvent.getIncidentId())
                         .setIncidentType(createEvent.getIncidentType())
                         .setDescription(createEvent.getDescription())
+                        .setLocation(createEvent.getLocation())
         ));
     }
 
@@ -45,6 +46,7 @@ public class IncidentEventProcessorTest {
         return new CreateIncidentEventDto()
                 .setIncidentId(UUID.randomUUID())
                 .setIncidentType(IncidentTypeDto.fire)
-                .setDescription("Fire in the disco!");
+                .setDescription("Fire in the disco!")
+                .setLocation("Oslo Spektrum");
     }
 }

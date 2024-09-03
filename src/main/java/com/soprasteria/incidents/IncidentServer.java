@@ -30,6 +30,7 @@ public class IncidentServer {
                 .setIncidentId(UUID.randomUUID())
                 .setDescription("Test")
                 .setIncidentType(IncidentTypeDto.fire)
+                .setLocation("Oslo Spektrum")
         );
     }
 
