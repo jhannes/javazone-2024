@@ -1,19 +1,12 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { useEffect, useState } from "react";
+import {
+  IncidentSnapshotDto,
+  IncidentSnapshotListDto,
+} from "../../../target/generated-sources/openapi-typescript";
 
 const root = createRoot(document.getElementById("root")!);
-
-interface IncidentSnapshotListDto {
-  list: IncidentSnapshotDto[];
-}
-
-interface IncidentSnapshotDto {
-  incidentId: string;
-  description: string;
-  incidentType: "fire" | "robbery";
-  location: string;
-}
 
 function Application() {
   const [webSocket, setWebSocket] = useState<WebSocket>();

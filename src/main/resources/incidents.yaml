@@ -1,0 +1,90 @@
+openapi: 3.0.3
+info:
+  version: "1.0"
+  title: "Public Safety Incident Response"
+paths:
+  "/ws":
+    post:
+      responses:
+        200:
+          description: "ok"
+      requestBody:
+        description: "send message to server"
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/MessageFromServer"
+components:
+  schemas:
+    MessageFromServer:
+      oneOf:
+        - $ref: "#/components/schemas/IncidentSnapshotList"
+        - $ref: "#/components/schemas/IncidentEvent"
+    IncidentEvent:
+      oneOf:
+        - $ref: "#/components/schemas/CreateIncidentEvent"
+        - $ref: "#/components/schemas/AddPersonToIncidentEvent"
+      discriminator:
+        propertyName: event
+    IncidentSnapshotList:
+      properties:
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/IncidentSnapshot"
+      required: [ list ]
+    IncidentSnapshot:
+      properties:
+        incidentId:
+          type: string
+          format: uuid
+        persons:
+          additionalProperties:
+            $ref: "#/components/schemas/PersonSnapshot"
+        description:
+          type: string
+        incidentType:
+          $ref: "#/components/schemas/IncidentType"
+        location:
+          type: string
+    PersonSnapshot:
+      properties:
+        personId:
+          type: string
+          format: uuid
+        personName:
+          type: string
+        role:
+          $ref: "#/components/schemas/PersonRole"
+    PersonRole:
+      type: string
+      enum: [ victim, witness, suspect, missing ]
+    CreateIncidentEvent:
+      properties:
+        incidentId:
+          type: string
+          format: uuid
+        description:
+          type: string
+        incidentType:
+          $ref: "#/components/schemas/IncidentType"
+        location:
+          type: string
+    AddPersonToIncidentEvent:
+      properties:
+        incidentId:
+          type: string
+          format: uuid
+        personId:
+          type: string
+          format: uuid
+        personName:
+          type: string
+        role:
+          $ref: "#/components/schemas/PersonRole"
+    IncidentType:
+      type: string
+      enum:
+        - fire
+        - robbery
+        - traffic

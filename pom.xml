@@ -60,4 +60,56 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.8.0</version>
+                <configuration>
+                    <inputSpec>src/main/resources/incidents.yaml</inputSpec>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>openapi-java</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <generatorName>java-lombok</generatorName>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <packageName>com.soprasteria.incidents</packageName>
+                            <modelPackage>com.soprasteria.incidents</modelPackage>
+                            <output>target/generated-sources/openapi-java</output>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>openapi-typescript</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <generatorName>typescript-fetch-api</generatorName>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <output>target/generated-sources/openapi-typescript</output>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>io.github.jhannes.openapi</groupId>
+                        <artifactId>openapi-generator-java-lombok</artifactId>
+                        <version>0.1.6</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>io.github.jhannes.openapi</groupId>
+                        <artifactId>openapi-generator-typescript-fetch-api</artifactId>
+                        <version>0.6.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 </project>

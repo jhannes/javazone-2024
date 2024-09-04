@@ -36,7 +36,7 @@ public class IncidentEventProcessorTest {
                 .setRole(PersonRoleDto.witness);
         incidentProcessor.process(addPersonEvent);
         assertThat(incidentProcessor.list().getFirst().getPersons()).isEqualTo(Map.of(
-                addPersonEvent.getPersonId(), new PersonSnapshotDto()
+                addPersonEvent.getPersonId().toString(), new PersonSnapshotDto()
                         .setPersonName(addPersonEvent.getPersonName())
                         .setRole(addPersonEvent.getRole())
         ));

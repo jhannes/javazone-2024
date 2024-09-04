@@ -23,7 +23,7 @@ public class IncidentProcessor {
         } else if (event instanceof AddPersonToIncidentEventDto addPerson) {
             snapshots.get(addPerson.getIncidentId())
                     .getPersons()
-                    .put(addPerson.getPersonId(), new PersonSnapshotDto()
+                    .put(addPerson.getPersonId().toString(), new PersonSnapshotDto()
                             .setPersonName(addPerson.getPersonName())
                             .setRole(addPerson.getRole())
                     );
