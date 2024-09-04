@@ -25,11 +25,13 @@ function Application() {
     <>
       <h1>Incident Response</h1>
       <h2>Incidents</h2>
-      {incidents.map((i) => (
-        <div key={i.incidentId}>
-          {i.description} ({i.incidentType}) at {i.location}
-        </div>
-      ))}
+      {incidents.map(
+        ({ incidentId, info: { description, incidentType, location } }) => (
+          <div key={incidentId}>
+            {description} ({incidentType}) at {location}
+          </div>
+        ),
+      )}
     </>
   );
 }

@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "test": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/react": "^18.3.5",

@@ -34,7 +34,7 @@ public class IncidentWebSocketAdapterTest {
     void shouldTransmitSnapshotsToClient() throws Exception {
         var createIncident = new CreateIncidentEventDto()
                 .setIncidentId(UUID.randomUUID())
-                .setDescription("Test incident");
+                .setInfo(new IncidentInfoDto().setDescription("Test incident"));
         processor.process(createIncident);
         var server = createServer();
 
@@ -51,7 +51,7 @@ public class IncidentWebSocketAdapterTest {
                 IncidentSnapshotListDto.class
         ).getList()).isEqualTo(List.of(new IncidentSnapshotDto()
                 .setIncidentId(createIncident.getIncidentId())
-                .setDescription(createIncident.getDescription())
+                .setInfo(createIncident.getInfo())
         ));
     }
 
@@ -71,7 +71,7 @@ public class IncidentWebSocketAdapterTest {
 
         var event = new CreateIncidentEventDto()
                 .setIncidentId(UUID.randomUUID())
-                .setDescription("Test incident");
+                .setInfo(new IncidentInfoDto().setDescription("Test incident"));
         connection.getRemote().sendString(IncidentWebSocketAdapter.objectMapper.writeValueAsString(event));
 
         var echo = messages.poll(1, TimeUnit.SECONDS);

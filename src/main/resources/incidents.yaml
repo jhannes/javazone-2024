@@ -41,6 +41,11 @@ components:
         persons:
           additionalProperties:
             $ref: "#/components/schemas/PersonSnapshot"
+        info:
+          $ref: "#/components/schemas/IncidentInfo"
+      required: [ incidentId, persons, info ]
+    IncidentInfo:
+      properties:
         description:
           type: string
         incidentType:
@@ -64,12 +69,9 @@ components:
         incidentId:
           type: string
           format: uuid
-        description:
-          type: string
-        incidentType:
-          $ref: "#/components/schemas/IncidentType"
-        location:
-          type: string
+        info:
+          $ref: "#/components/schemas/IncidentInfo"
+      required: [ incidentId, info ]
     AddPersonToIncidentEvent:
       properties:
         incidentId:

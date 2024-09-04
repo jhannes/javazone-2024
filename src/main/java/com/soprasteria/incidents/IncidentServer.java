@@ -28,10 +28,11 @@ public class IncidentServer {
 
         processor.process(new CreateIncidentEventDto()
                 .setIncidentId(UUID.randomUUID())
-                .setDescription("Test")
-                .setIncidentType(IncidentTypeDto.fire)
-                .setLocation("Oslo Spektrum")
-        );
+                .setInfo(new IncidentInfoDto()
+                        .setDescription("Test")
+                        .setIncidentType(IncidentTypeDto.fire)
+                        .setLocation("Oslo Spektrum")
+                ));
     }
 
     public static void main(String[] args) throws Exception {

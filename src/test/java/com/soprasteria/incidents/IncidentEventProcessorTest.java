@@ -19,9 +19,7 @@ public class IncidentEventProcessorTest {
         assertThat(incidentProcessor.list()).isEqualTo(List.of(
                 new IncidentSnapshotDto()
                         .setIncidentId(createEvent.getIncidentId())
-                        .setIncidentType(createEvent.getIncidentType())
-                        .setDescription(createEvent.getDescription())
-                        .setLocation(createEvent.getLocation())
+                        .setInfo(createEvent.getInfo())
         ));
     }
 
@@ -45,8 +43,9 @@ public class IncidentEventProcessorTest {
     private static CreateIncidentEventDto createIncidentEvent() {
         return new CreateIncidentEventDto()
                 .setIncidentId(UUID.randomUUID())
-                .setIncidentType(IncidentTypeDto.fire)
-                .setDescription("Fire in the disco!")
-                .setLocation("Oslo Spektrum");
+                .setInfo(new IncidentInfoDto()
+                        .setIncidentType(IncidentTypeDto.fire)
+                        .setDescription("Fire in the disco!")
+                        .setLocation("Oslo Spektrum"));
     }
 }
